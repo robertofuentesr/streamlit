@@ -1,4 +1,5 @@
 streamlit
+thinc>=8.1.0
 pandas
 altair
 numpy
