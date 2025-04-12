@@ -3,10 +3,11 @@ thinc>=8.1.0
 pandas
 altair
 numpy
-re
 spacy==3.5.0
 requests
-collections
+# The following are standard Python modules and don't need to be listed:
+# re
+# collections
+
+# Include the SpaCy model as a separate installation step
 https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.5.0/de_core_news_sm-3.5.0-py3-none-any.whl
-
-
