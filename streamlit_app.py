@@ -5,7 +5,14 @@ import altair as alt
 import spacy
 import re
 from collections import Counter
+import warnings
 
+def fxn():
+    warnings.warn("deprecated", DeprecationWarning)
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    fxn()
 @st.cache_resource
 def load_model():
     """Load the SpaCy German model."""
@@ -52,14 +59,15 @@ def main():
     else:
         st.stop()  # Stop the app if the text couldn't be loaded
     
+    
     # Load SpaCy German model
-    nlp = load_model()
-
+    nlp = spacy.load("de_core_news_sm")
+    
     # Extract nouns, adjectives, and verbs
     nouns = extract_words_by_pos(text, nlp, "NOUN")
     adjectives = extract_words_by_pos(text, nlp, "ADJ")
     verbs = extract_words_by_pos(text, nlp, "VERB")
-
+    print("holi")
     # Display results and visualizations for nouns
     st.write(f"### Extracted {len(nouns)} nouns.")
     noun_counts = pd.DataFrame(pd.Series(nouns).value_counts(), columns=["Frequency"]).reset_index()
