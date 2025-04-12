@@ -1,6 +1,11 @@
 streamlit
 pandas
 altair
+numpy
+re
 spacy==3.5.0
 requests
-python -m spacy download de_core_news_sm
+collections
+https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.5.0/de_core_news_sm-3.5.0-py3-none-any.whl
+
+
