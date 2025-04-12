@@ -1,13 +1,10 @@
 streamlit
-thinc>=8.1.0
-pandas
+thincpandas
 altair
 numpy
-spacy==3.5.0
+spacy
 requests
-# The following are standard Python modules and don't need to be listed:
-# re
-# collections
+
 
 # Include the SpaCy model as a separate installation step
 https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.5.0/de_core_news_sm-3.5.0-py3-none-any.whl
