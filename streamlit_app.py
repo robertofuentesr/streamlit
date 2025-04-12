@@ -7,12 +7,14 @@ import re
 from collections import Counter
 import warnings
 
-def fxn():
-    warnings.warn("deprecated", DeprecationWarning)
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
-    fxn()
+def download(df,name="nouns"):
+    csv = df.to_csv(index=False)
+    st.download_button(
+    label=str(f"Download {name} as CSV"),
+    data=csv,
+    file_name=str(f"{name}.csv"),
+    mime="text/csv"
+)
 @st.cache_resource
 def load_model():
     """Load the SpaCy German model."""
@@ -43,11 +45,15 @@ def process_text(text):
     # Use a regular expression to only capture words (alphabetic characters) of length 2 or more.
     words = re.findall(r'\b[a-z]{2,}\b', text.lower())
     return Counter(words)
-
+def list_to_pandas(nouns):
+    word = list(pd.Series(nouns).value_counts().index)
+    number_times = list(pd.Series(nouns).value_counts().values)
+    df = pd.DataFrame({"word":word, "frequency": number_times })
+    return df
 def main():
     st.title("Word Frequency Visualizer")
     st.write("""This Streamlit app reads a text from Project Gutenberg
-             and shows the most popular words.""")
+            and shows the most popular words.""")
 
     # URL to the text file on Project Gutenberg
     url = "https://www.gutenberg.org/cache/epub/22367/pg22367.txt"
@@ -58,72 +64,44 @@ def main():
         st.success("Text loaded successfully!")
     else:
         st.stop()  # Stop the app if the text couldn't be loaded
-    
-    
+
+
     # Load SpaCy German model
     nlp = spacy.load("de_core_news_sm")
-    
+
     # Extract nouns, adjectives, and verbs
     nouns = extract_words_by_pos(text, nlp, "NOUN")
+
     adjectives = extract_words_by_pos(text, nlp, "ADJ")
     verbs = extract_words_by_pos(text, nlp, "VERB")
-    print("holi")
+
     # Display results and visualizations for nouns
     st.write(f"### Extracted {len(nouns)} nouns.")
-    noun_counts = pd.DataFrame(pd.Series(nouns).value_counts(), columns=["Frequency"]).reset_index()
-    noun_counts.rename(columns={"index": "Noun"}, inplace=True)
-    top_nouns = noun_counts.head(100)
-    st.write("### Top 20 Most Frequent Nouns")
-    st.dataframe(top_nouns)
 
-    noun_chart = alt.Chart(top_nouns).mark_bar().encode(
-        x=alt.X("Frequency:Q", title="Frequency"),
-        y=alt.Y("Noun:N", sort='-x', title="Noun"),
-        tooltip=["Noun", "Frequency"]
-    ).properties(
-        width=600,
-        height=400,
-        title="Top 20 Nouns in the Text"
-    )
-    st.altair_chart(noun_chart, use_container_width=True)
+    noun_counts = list_to_pandas(nouns)
+    adjective_counts = list_to_pandas(adjectives)
+    verb_counts = list_to_pandas(verbs)
+
+    st.dataframe(noun_counts)
+
 
     # Display results and visualizations for adjectives
     st.write(f"### Extracted {len(adjectives)} adjectives.")
-    adj_counts = pd.DataFrame(pd.Series(adjectives).value_counts(), columns=["Frequency"]).reset_index()
-    adj_counts.rename(columns={"index": "Adjective"}, inplace=True)
-    top_adjectives = adj_counts.head(20)
+    st.dataframe(adjective_counts)
     st.write("### Top 20 Most Frequent Adjectives")
-    st.dataframe(top_adjectives)
-
-    adj_chart = alt.Chart(top_adjectives).mark_bar().encode(
-        x=alt.X("Frequency:Q", title="Frequency"),
-        y=alt.Y("Adjective:N", sort='-x', title="Adjective"),
-        tooltip=["Adjective", "Frequency"]
-    ).properties(
-        width=600,
-        height=400,
-        title="Top 20 Adjectives in the Text"
-    )
-    st.altair_chart(adj_chart, use_container_width=True)
+    st.dataframe(noun_counts)
 
     # Display results and visualizations for verbs
     st.write(f"### Extracted {len(verbs)} verbs.")
-    verb_counts = pd.DataFrame(pd.Series(verbs).value_counts(), columns=["Frequency"]).reset_index()
-    verb_counts.rename(columns={"index": "Verb"}, inplace=True)
-    top_verbs = verb_counts.head(20)
-    st.write("### Top 20 Most Frequent Verbs")
-    st.dataframe(top_verbs)
+    st.dataframe(verb_counts)
 
-    verb_chart = alt.Chart(top_verbs).mark_bar().encode(
-        x=alt.X("Frequency:Q", title="Frequency"),
-        y=alt.Y("Verb:N", sort='-x', title="Verb"),
-        tooltip=["Verb", "Frequency"]
-    ).properties(
-        width=600,
-        height=400,
-        title="Top 20 Verbs in the Text"
-    )
-    st.altair_chart(verb_chart, use_container_width=True)
+    # Convert the dataframe to CSV
+
+    download(noun_counts)
+    download(adjective_counts,"adjetives")
+    download(verb_counts,"verbs")
+
+
 
 if __name__ == '__main__':
     main()
