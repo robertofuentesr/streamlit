@@ -1,7 +1,6 @@
 streamlit
-spacy==3.7.4
-pandas==2.1.0
+pandas
 altair
-spacy
-requests==2.31.0
-https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.5.0/de_core_news_sm-3.5.0-py3-none-any.whl
+spacy==3.5.0
+requests
+python -m spacy download de_core_news_sm
