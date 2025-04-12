@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import altair as alt
+import spacy
 import re
 from collections import Counter
 
@@ -63,7 +64,7 @@ def main():
     st.write(f"### Extracted {len(nouns)} nouns.")
     noun_counts = pd.DataFrame(pd.Series(nouns).value_counts(), columns=["Frequency"]).reset_index()
     noun_counts.rename(columns={"index": "Noun"}, inplace=True)
-    top_nouns = noun_counts.head(20)
+    top_nouns = noun_counts.head(100)
     st.write("### Top 20 Most Frequent Nouns")
     st.dataframe(top_nouns)
 
