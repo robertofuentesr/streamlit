@@ -43,7 +43,7 @@ def main():
     
     # Convert the Counter dictionary into a DataFrame
     df = pd.DataFrame(word_counts.items(), columns=["Word", "Frequency"])
-    df = df.sort_values(by="Frequency", ascending=False).head(20)  # Top 20 words
+    df = df.sort_values(by="Frequency", ascending=False).head(1000)  # Top 20 words
 
     st.write("### Top 20 Most Frequent Words")
     st.dataframe(df)
