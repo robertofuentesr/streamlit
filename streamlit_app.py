@@ -107,7 +107,7 @@ def main():
 
         # Display results and visualizations for adjectives
         st.write(f"### Extracted {len(adjectives)} adjectives.")
-        st.dataframe(adjective_counts, width=100)
+        st.dataframe(adjective_counts, width=1000)
 
         # Display results and visualizations for verbs
         st.write(f"### Extracted {len(verbs)} verbs.")
