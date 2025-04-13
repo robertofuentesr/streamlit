@@ -102,18 +102,16 @@ def main():
         adjective_counts = list_to_pandas(adjectives)
         verb_counts = list_to_pandas(verbs)
 
-        st.dataframe(noun_counts)
+        st.dataframe(noun_counts, width=1000)
 
 
         # Display results and visualizations for adjectives
         st.write(f"### Extracted {len(adjectives)} adjectives.")
-        st.dataframe(adjective_counts)
-        st.write("### Top 20 Most Frequent Adjectives")
-        st.dataframe(noun_counts)
+        st.dataframe(adjective_counts, width=100)
 
         # Display results and visualizations for verbs
         st.write(f"### Extracted {len(verbs)} verbs.")
-        st.dataframe(verb_counts)
+        st.dataframe(verb_counts, width=1000)
 
         # Convert the dataframe to CSV
 
