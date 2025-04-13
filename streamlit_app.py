@@ -27,13 +27,33 @@ def extract_words_by_pos(text, nlp, pos):
     words = [token.lemma_ for token in doc if token.pos_ == pos]
     return words
 @st.cache_data
+
 def load_text(url):
-    """Download the text from the URL."""
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.text
-    else:
-        st.error("Error fetching the text!")
+    """Download and clean text from the URL."""
+    try:
+        response = requests.get(url)
+        response.encoding = 'utf-8'  # Force UTF-8 encoding
+        if response.status_code == 200:
+            # Parse HTML with BeautifulSoup
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Remove script and style elements
+            for script in soup(["script", "style", "nav", "footer", "header"]):
+                script.decompose()
+                
+            # Get text content with proper spacing
+            text = soup.get_text(separator='\n', strip=True)
+            
+            # Remove excessive empty lines
+            cleaned_text = '\n'.join([line.strip() for line in text.split('\n') if line.strip()])
+            return cleaned_text
+            
+        else:
+            st.error(f"Error: HTTP Status {response.status_code}")
+            return ""
+            
+    except Exception as e:
+        st.error(f"Error fetching content: {str(e)}")
         return ""
 
 def process_text(text):
@@ -66,7 +86,6 @@ def main():
         # Add your text processing here
     else:
         st.write("Please enter a URL to begin")
-    text = load_text(url)
     if text:
         st.success("Text loaded successfully!")
     else:
