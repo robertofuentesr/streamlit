@@ -55,7 +55,9 @@ def main():
             and shows the most popular words.""")
 
     # URL to the text file on Project Gutenberg
-    url = "https://www.gutenberg.org/cache/epub/22367/pg22367.txt"
+    #url = "https://www.gutenberg.org/cache/epub/22367/pg22367.txt"
+    # Input field for the URL
+    url = st.text_input("Enter a URL:")
     st.write(f"""This is the website: {url}""")
     # Load and display basic info about the text
     text = load_text(url)
