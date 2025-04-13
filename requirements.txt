@@ -4,5 +4,4 @@ altair==5.2.0
 numpy==1.24.4
 spacy==3.7.4
 requests==2.31.0
-thinc==8.1.12
-https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.5.0/de_core_news_sm-3.5.0-py3-none-any.whl
+https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.7.0/de_core_news_sm-3.7.0-py3-none-any.whl
