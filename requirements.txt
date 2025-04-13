@@ -1,3 +1,4 @@
+python_version = "3.9.16"
 streamlit
 thinc
 pandas  # Assuming "thincpandas" was a typo (thinc + pandas are separate packages)
@@ -6,3 +7,4 @@ numpy
 spacy
 requests
 https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.5.0/de_core_news_sm-3.5.0-py3-none-any.whl
+thinc==8.1.12 
