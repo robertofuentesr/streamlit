@@ -5,6 +5,7 @@ import altair as alt
 import spacy
 import re
 from collections import Counter
+from bs4 import beautifulsoup4
 
 def download(df,name="nouns"):
     csv = df.to_csv(index=False)
