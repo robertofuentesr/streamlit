@@ -85,7 +85,7 @@ def main():
         # Load and display basic info about the text
         text = load_text(url)
         # Add your text processing here
-        
+        text = process_text(text)
         # Load SpaCy German model
         nlp = spacy.load("de_core_news_sm")
 
