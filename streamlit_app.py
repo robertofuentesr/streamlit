@@ -47,6 +47,7 @@ def load_text(url):
             
             # Remove excessive empty lines
             cleaned_text = '\n'.join([line.strip() for line in text.split('\n') if line.strip()])
+            cleaned_text = re.sub(r'\b\w*\d\w*\b', '', cleaned_text)
             return cleaned_text
             
         else:
@@ -84,8 +85,7 @@ def main():
         st.write(f"""This is the website: {url}""")
         # Load and display basic info about the text
         text = load_text(url)
-        # Add your text processing here
-        text = process_text(text)
+
         # Load SpaCy German model
         nlp = spacy.load("de_core_news_sm")
 
