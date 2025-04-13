@@ -58,8 +58,14 @@ def main():
     #url = "https://www.gutenberg.org/cache/epub/22367/pg22367.txt"
     # Input field for the URL
     url = st.text_input("Enter a URL:")
-    st.write(f"""This is the website: {url}""")
     # Load and display basic info about the text
+    if url:  # Only execute if url is not empty
+        st.write(f"""This is the website: {url}""")
+        # Load and display basic info about the text
+        text = load_text(url)
+        # Add your text processing here
+    else:
+        st.write("Please enter a URL to begin")
     text = load_text(url)
     if text:
         st.success("Text loaded successfully!")
