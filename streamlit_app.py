@@ -5,7 +5,6 @@ import altair as alt
 import spacy
 import re
 from collections import Counter
-import warnings
 
 def download(df,name="nouns"):
     csv = df.to_csv(index=False)
