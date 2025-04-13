@@ -73,8 +73,8 @@ def list_to_pandas(nouns):
     return df
 def main():
     st.title("Word Frequency Visualizer")
-    st.write("""This Streamlit app reads a text from Project Gutenberg
-            and shows the most popular words.""")
+    st.write("""This Streamlit app reads a text in German
+            and shows the most popular words. You can try a link here ;)""")
 
     # URL to the text file on Project Gutenberg
     #url = "https://www.gutenberg.org/cache/epub/22367/pg22367.txt"
