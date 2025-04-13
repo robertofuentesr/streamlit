@@ -1,7 +1,6 @@
 python_version = "3.9.16"
 streamlit
-thinc
-pandas  # Assuming "thincpandas" was a typo (thinc + pandas are separate packages)
+pandas
 altair
 numpy
 spacy
