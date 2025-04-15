@@ -74,7 +74,7 @@ def list_to_pandas(nouns):
 def identifying_level(level,dictionary,df):
     dictionary_df = pd.read_csv(dictionary)
     df = df.merge(dictionary_df[['word','level']], how='left', on=['word'] )
-    df = df.fillna(level)
+    df = df.fillna("C2")
     level_dictionary = {"A1":1, 
                         "A2":2,
                         "B1":3,
