@@ -141,8 +141,7 @@ def main():
         download(noun_counts)
         download(adjective_counts,"adjetives")
         download(verb_counts,"verbs")
-        st.write(f"""If you have fun using this and want to donate I'll give you the option (paypal). Maybe you would be the first one :)""")
-        
+
 
     else:
         st.write("Please enter a URL to begin")
