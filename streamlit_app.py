@@ -28,7 +28,6 @@ def extract_words_by_pos(text, nlp, pos):
     words = [token.lemma_ for token in doc if token.pos_ == pos]
     return words
 @st.cache_data
-
 def load_text(url):
     """Download and clean text from the URL."""
     try:
@@ -57,7 +56,6 @@ def load_text(url):
     except Exception as e:
         st.error(f"Error fetching content: {str(e)}")
         return ""
-
 def process_text(text):
     """
     Process the text: remove punctuation, convert to lowercase,
@@ -66,22 +64,46 @@ def process_text(text):
     # Use a regular expression to only capture words (alphabetic characters) of length 2 or more.
     words = re.findall(r'\b[a-z]{2,}\b', text.lower())
     return Counter(words)
+
 def list_to_pandas(nouns):
     word = list(pd.Series(nouns).value_counts().index)
     number_times = list(pd.Series(nouns).value_counts().values)
     df = pd.DataFrame({"word":word, "frequency": number_times })
     return df
+
+def identifying_level(level,dictionary,df):
+    dictionary_df = pd.read_csv(dictionary)
+    df = df.merge(dictionary_df[['word','level']], how='left', on=['word'] )
+    df = df.fillna(level)
+    level_dictionary = {"A1":1, 
+                        "A2":2,
+                        "B1":3,
+                        "B2":4,
+                        "C1":5,
+                        "C2":6,}
+    df['level_number'] = df['level']
+    df['level_number'] = df['level_number'].apply(lambda x: level_dictionary[x])
+    # we select a higher or equal level
+    df = df[df["level_number"]>=level_dictionary[level]]
+    df.drop(["level_number"], axis=1, inplace=True)
+    return df
 def main():
     st.title("Word Frequency Visualizer")
-    st.write("""This Streamlit app reads a text in German
-            and shows the most popular words. You can try a link here ;)""")
+    st.write("""This Streamlit app reads a text/url in German
+            and shows you only the words you probably don't know. 
+            Currently, this is a beta version (maybe even an alpha (?)). 
+            So it may show some words that are easy at C2-level. 
+            Gauging which words you truly know thou, JUST based on your level is tricky. Because it 
+            depends on what you've read or studied to reach that level.
+            without further ado, give it a shot :) """)
 
     # URL to the text file on Project Gutenberg
     #url = "https://www.gutenberg.org/cache/epub/22367/pg22367.txt"
     # Input field for the URL
     url = st.text_input("Enter a URL:")
+    level = st.text_input("Enter your level: A1, A2, B1, B2, C1, C2")
     # Load and display basic info about the text
-    if url:  # Only execute if url is not empty
+    if url and level:  # Only execute if url and level are not empty
         st.write(f"""This is the website: {url}""")
         # Load and display basic info about the text
         text = load_text(url)
@@ -95,29 +117,38 @@ def main():
         adjectives = extract_words_by_pos(text, nlp, "ADJ")
         verbs = extract_words_by_pos(text, nlp, "VERB")
 
-        # Display results and visualizations for nouns
-        st.write(f"### Extracted {len(nouns)} nouns.")
-
         noun_counts = list_to_pandas(nouns)
         adjective_counts = list_to_pandas(adjectives)
         verb_counts = list_to_pandas(verbs)
 
+
+        # joining
+        noun_counts = identifying_level(level,"noun_counts_total.csv",noun_counts)
+        adjective_counts = identifying_level(level,"adjective_counts_total.csv",adjective_counts)
+        verb_counts = identifying_level(level,"verb_counts_total.csv",verb_counts)
+
+        # Display results and visualizations for nouns
+        st.write(f"### Extracted {len(nouns)} nouns.")
         st.dataframe(noun_counts, width=1000)
-
-
         # Display results and visualizations for adjectives
         st.write(f"### Extracted {len(adjectives)} adjectives.")
         st.dataframe(adjective_counts, width=1000)
-
         # Display results and visualizations for verbs
         st.write(f"### Extracted {len(verbs)} verbs.")
         st.dataframe(verb_counts, width=1000)
 
         # Convert the dataframe to CSV
-
         download(noun_counts)
         download(adjective_counts,"adjetives")
         download(verb_counts,"verbs")
+        st.write(f"""If you have fun using this and want to donate I'll give you the option (paypal). Maybe you would be the first one :)""")
+
+        body = """<form action="https://www.paypal.com/donate" method="post" target="_top">
+<input type="hidden" name="hosted_button_id" value="CK2JKRURRVTVG" />
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_CL/i/scr/pixel.gif" width="1" height="1" />
+</form>"""
+        st.html(body)
     else:
         st.write("Please enter a URL to begin")
 
