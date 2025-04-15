@@ -142,13 +142,8 @@ def main():
         download(adjective_counts,"adjetives")
         download(verb_counts,"verbs")
         st.write(f"""If you have fun using this and want to donate I'll give you the option (paypal). Maybe you would be the first one :)""")
+        
 
-        body = """<form action="https://www.paypal.com/donate" method="post" target="_top">
-<input type="hidden" name="hosted_button_id" value="CK2JKRURRVTVG" />
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-<img alt="" border="0" src="https://www.paypal.com/en_CL/i/scr/pixel.gif" width="1" height="1" />
-</form>"""
-        st.html(body)
     else:
         st.write("Please enter a URL to begin")
 
