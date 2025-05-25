@@ -92,7 +92,7 @@ def main():
     st.write("""This Streamlit app reads a text/url in German
             and shows you only the words you probably don't know. 
             Currently, this is a beta version (maybe even an alpha (?)). 
-            So it may show some words that are easy at C2-level. 
+            So it may show some words that are easy at C2-level. Especially nouns. 
             Gauging which words you truly know thou, JUST based on your level is tricky. Because it 
             depends on what you've read or studied to reach that level.
             without further ado, give it a shot :) """)
